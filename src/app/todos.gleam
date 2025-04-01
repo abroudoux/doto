@@ -6,7 +6,7 @@ pub type Todo {
   Todo(title: String, completed: Bool)
 }
 
-pub fn todos(req: Request) -> Response {
+pub fn handle_todos(req: Request) -> Response {
   case req.method {
     Get -> get_todos()
     Post -> post_todo(req)
@@ -35,6 +35,12 @@ pub fn handle_todo(req: Request, id: String) -> Response {
   }
 }
 
+fn get_todo(_req: Request, id: String) -> Response {
+  let html = string_tree.from_string("todo with id " <> id)
+  wisp.ok()
+  |> wisp.html_body(html)
+}
+
 fn put_todo(_req: Request, id: String) -> Response {
   let html = string_tree.from_string("Updated todo with id " <> id)
   wisp.created()
@@ -44,11 +50,5 @@ fn put_todo(_req: Request, id: String) -> Response {
 fn delete_todo(_req: Request, id: String) -> Response {
   let html = string_tree.from_string("Deleted todo with id " <> id)
   wisp.created()
-  |> wisp.html_body(html)
-}
-
-fn get_todo(_req: Request, id: String) -> Response {
-  let html = string_tree.from_string("todo with id " <> id)
-  wisp.ok()
   |> wisp.html_body(html)
 }
